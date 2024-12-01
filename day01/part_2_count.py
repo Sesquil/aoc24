@@ -6,8 +6,9 @@ for line in lines:
     for i, x in enumerate(line.split()):
         lists[i].append(int(x))
 
-for l in lists:
-    l.sort()
-
-res = sum(abs(x - y) for x, y in zip(*lists))
+x_max = max(max(l) for l in lists)
+c = [0]*(x_max+1)
+for x in lists[1]:
+    c[x] += 1
+res = sum(x * c[x] for x in lists[0])
 print(res)
