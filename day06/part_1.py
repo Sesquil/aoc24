@@ -1,5 +1,5 @@
 with open('input.txt', 'r') as f:
-    level = [[c for c in line.strip()] for line in f.readlines()]
+    level = [line.strip() for line in f.readlines()]
 
 STEP = [(0,-1), (1,0), (0,1), (-1,0)]
 def lookup(x, y, d):
@@ -13,13 +13,14 @@ for y in range(n):
         break
 
 x, y, c, d = sx, sy, "^", 0
+pos = set()
 while c:
     c = lookup(x, y, d)
     if c == "#":
         d = (d + 1) % 4
     else:
-        level[y][x] = "X"
+        pos.add((x, y))
         x += STEP[d][0]; y += STEP[d][1]
 
-res = sum(row.count("X") for row in level)
+res = len(pos)
 print(res)

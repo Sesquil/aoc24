@@ -1,5 +1,5 @@
 with open('input.txt', 'r') as f:
-    level = [[c for c in line.strip()] for line in f.readlines()]
+    level = [line.strip() for line in f.readlines()]
 
 STEP = [(0,-1), (1,0), (0,1), (-1,0)]
 def lookup(x, y, d):
@@ -13,20 +13,21 @@ for y in range(n):
         break
 
 x, y, c, d = sx, sy, "^", 0
+pos = set()
 while c:
     c = lookup(x, y, d)
     if c == "#":
         d = (d + 1) % 4
     else:
-        level[y][x] = "X"
+        pos.add((x, y))
         x += STEP[d][0]; y += STEP[d][1]
-level[sy][sx] = "^"
+pos.remove((sx, sy))
 
 DIRS = [1, 2, 4, 8]
 def check_loop(sx, sy, ox, oy):
+    level[oy] = level[oy][:ox] + "#" + level[oy][ox+1:]
     x, y, c, d = sx, sy, "^", 0
     mem = [[0]*m for _ in range(n)]
-    level[oy][ox] = "#"
     res = False
     while c:
         if mem[y][x] & DIRS[d]:
@@ -38,9 +39,8 @@ def check_loop(sx, sy, ox, oy):
             d = (d + 1) % 4
         else:
             x += STEP[d][0]; y += STEP[d][1]
-    level[oy][ox] = "X"    
+    level[oy] = level[oy][:ox] + "." + level[oy][ox+1:]
     return res
 
-res = sum(sum(check_loop(sx, sy, ox, oy) for ox in range(m) \
-              if level[oy][ox] == "X") for oy in range(n))
+res = sum(check_loop(sx, sy, ox, oy) for (ox, oy) in pos)
 print(res)
