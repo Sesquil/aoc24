@@ -1,4 +1,4 @@
-with open('input.txt', 'r') as f:
+with open("input.txt", "r") as f:
     lines = f.readlines()
 
 DIRS = [(-1, -1), (1, -1), (-1, 1), (1, 1)]

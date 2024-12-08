@@ -1,4 +1,4 @@
-with open('input.txt', 'r') as f:
+with open("input.txt", "r") as f:
     level = [line.strip() for line in f.readlines()]
 
 STEP = [(0,-1), (1,0), (0,1), (-1,0)]

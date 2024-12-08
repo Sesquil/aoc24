@@ -22,7 +22,7 @@ def topsort(nodes):
 rules = []
 updates = []
 process_rules = True
-with open('input.txt', 'r') as f:
+with open("input.txt", "r") as f:
     for line in f.readlines():
         line = line.strip()
         if not line:
