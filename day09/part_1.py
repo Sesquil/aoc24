@@ -1,32 +1,31 @@
 with open("input.txt", "r") as f:
     line = f.readline().strip()
 
-i = 1
-j = len(line)-1
-x = int(line[i])
-y = int(line[j])
-fid = j // 2
-pos = int(line[0])
+a = [int(line[i]) for i in range(0, len(line), 2)]
+b = [int(line[i]) for i in range(1, len(line), 2)]
+i, j = 0, len(a)-1
+x, y = b[i], a[j]
+pos = a[0]
 res = 0
-#blocks = "0" * int(line[0])
+#blocks = "0" * a[0]
 while i < j:
     if x == 0:
-        n = int(line[i+1]) if i+1 < j else y
-        #blocks += str((i+1)//2) * n
-        res += sum(((i+1)//2) * (pos+k) for k in range(n))
-        pos += int(line[i+1])
-        i += 2
-        x = int(line[i])
+        i += 1
+        n = a[i] if i < j else y
+        #blocks += str(i) * n
+        res += sum(i * (pos+k) for k in range(n))
+        pos += a[i]
+        x = b[i]
     elif y == 0:
-        fid -= 1
-        j -= 2
-        y = int(line[j])
+        j -= 1
+        y = a[j]
     else:
-        #blocks += str(fid)
-        res += fid * pos
-        pos += 1
-        x -=  1
-        y -= 1
+        n = min(x, y)
+        #blocks += str(j) * n
+        res += sum(j * (pos+k) for k in range(n))
+        pos += n
+        x -= n
+        y -= n
 
 print(res)
-#print(blocks)
+#print(blocks.ljust(sum(a) + sum(b), "."))
