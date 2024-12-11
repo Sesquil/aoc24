@@ -1,6 +1,7 @@
 with open("input.txt", "r") as f:
     a = [int(x) for x in f.readline().split()]
 
+# Solve recursively with memoization
 T = {}
 
 def blink(x, n):

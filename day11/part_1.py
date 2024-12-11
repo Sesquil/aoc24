@@ -1,6 +1,7 @@
 with open("input.txt", "r") as f:
     a = [int(x) for x in f.readline().split()]
 
+# Brute-force simulation without optimization
 def blink(a):
     b = []
     for x in a:
