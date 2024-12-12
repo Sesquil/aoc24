@@ -1,7 +1,7 @@
 with open("input.txt", "r") as f:
     level = [line.strip() for line in f.readlines()]
 
-n, m  = len(level), len(level[0])
+n, m = len(level), len(level[0])
 sym = {c for c in "".join(level) if c != "."}
 pos = {c: [(x, y) for x in range(m) for y in range(n) if level[y][x] == c] for c in sym}
 
