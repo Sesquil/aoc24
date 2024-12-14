@@ -13,15 +13,22 @@ w, h = 101, 103
 
 NUM_STATES = 10403  # computed with count_states.py
 
-def check(robots, t):
-    RESULT = 6516       # manually found result
-    return t == RESULT
+# check if robot positions are approximately evenly distributed
+def check(robots):
+    cx, cy = [0]*w, [0]*h
+    for r in robots:
+        cx[r[0]] += 1
+        cy[r[1]] += 1
+    ex, ey = len(robots) / w, len(robots) / h
+    f = 4.0  # heuristic factor for deviation
+    return any(c > f*ex for c in cx) and any(c > f*ey for c in cy)
 
 # simulate robot movement
 for t in range(1, NUM_STATES+1):
     for r in robots:
         r[0], r[1] = (r[0] + r[2]) % w, (r[1] + r[3]) % h
-    if check(robots, t):
+    if check(robots):
+        print(t)
         # save image
         img = Image.new("RGB", (w, h))
         pxl = img.load()
