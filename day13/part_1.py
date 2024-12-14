@@ -1,12 +1,12 @@
 import re
 
 def parseTests(f):
-    regexp = re.compile(r"(\d+)[^\d]+(\d+)")
+    regexp = re.compile(r"\d+")
     tests = []
     while True:
         lines = [f.readline() for _ in range(4)]
         if not lines[0]: break
-        tests.append([tuple(int(z) for z in m) for m in [regexp.findall(l)[0] for l in lines[:-1]]])
+        tests.append([tuple(int(z) for z in regexp.findall(l)) for l in lines[:-1]])
     return tests
 
 with open("input.txt", "r") as f:
