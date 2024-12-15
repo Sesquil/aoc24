@@ -20,8 +20,13 @@ def check(robots):
         cx[r[0]] += 1
         cy[r[1]] += 1
     ex, ey = len(robots) / w, len(robots) / h
+    """
     f = 4.0  # heuristic factor for deviation
     return any(c > f*ex for c in cx) and any(c > f*ey for c in cy)
+    """
+    dx = sum(abs(c-ex) for c in cx) / w
+    dy = sum(abs(c-ey) for c in cy) / h
+    return dx > 0.5*ex and dy > 0.5*ey
 
 # simulate robot movement
 for t in range(1, NUM_STATES+1):
