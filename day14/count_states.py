@@ -9,7 +9,7 @@ for line in lines:
     robots.append([int(z) for z in regexp.findall(line)])
 w, h = 101, 103
 
-# simulate robot movement and count states
+# Simulate robot movement and count states
 states = set()
 while True:
     for r in robots:

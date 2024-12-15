@@ -9,12 +9,12 @@ for line in lines:
     robots.append([int(z) for z in regexp.findall(line)])
 w, h = 101, 103
 
-# simulate robot movement
+# Simulate robot movement
 for _ in range(100):
     for r in robots:
         r[0], r[1] = (r[0] + r[2]) % w, (r[1] + r[3]) % h
 
-# count robots in quadrants
+# Count robots in quadrants
 num = [0]*4
 for r in robots:
     if r[0] != w//2 and r[1] != h//2:
