@@ -18,7 +18,7 @@ for y in range(1, h-1):
     for x in range(1, w-1):
         if level[y][x] != "#":
             for d in range(4):
-                graph[(x, y, d)] = []
+                graph[(x, y, d)] = [((x, y, (d+i)%4), 1000) for i in (-1, 1)]
 for y in range(1, h-1):
     for x in range(1, w-1):
         if level[y][x] != "#":
@@ -26,8 +26,6 @@ for y in range(1, h-1):
                 nx, ny = x+dx, y+dy
                 if level[ny][nx] != "#":
                     graph[(x, y, nd)].append(((nx, ny, nd), 1))
-                    graph[(x, y, (nd-1)%4)].append(((nx, ny, nd), 1001))
-                    graph[(x, y, (nd+1)%4)].append(((nx, ny, nd), 1001))
 
 # Find min. cost from start via Dijkstra algorithm
 def solve(x, y, d):

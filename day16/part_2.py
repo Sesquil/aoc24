@@ -18,7 +18,7 @@ for y in range(1, h-1):
     for x in range(1, w-1):
         if level[y][x] != "#":
             for d in range(4):
-                graph[(x, y, d)] = []
+                graph[(x, y, d)] = [((x, y, (d+i)%4), 1000) for i in (-1, 1)]
 for y in range(1, h-1):
     for x in range(1, w-1):
         if level[y][x] != "#":
@@ -26,8 +26,6 @@ for y in range(1, h-1):
                 nx, ny = x+dx, y+dy
                 if level[ny][nx] != "#":
                     graph[(x, y, nd)].append(((nx, ny, nd), 1))
-                    graph[(x, y, (nd-1)%4)].append(((nx, ny, nd), 1001))
-                    graph[(x, y, (nd+1)%4)].append(((nx, ny, nd), 1001))
 
 # Find min. cost from given node via Dijkstra algorithm
 def solve(x, y, dirs):
@@ -57,7 +55,6 @@ s_min = min(cost_from_s[(tx, ty, d)] for d in range(4))
 res = 0
 for y in range(1, h-1):
     for x in range(1, w-1):
-        ok = False
         for d in range(4):
             if any(cost_from_s.get((x, y, d), inf) + abs(i)*1000 + \
                    cost_from_t.get((x, y, (d+2+i)%4), inf) == s_min \
