@@ -19,6 +19,8 @@ for y in range(1, h-1):
         if level[y][x] != "#":
             for d in range(4):
                 graph[(x, y, d)] = [((x, y, (d+i)%4), 1000) for i in (-1, 1)]
+for d in range(4):
+    graph[(tx, ty, d)] = [((tx, ty, (d+i)%4), 0) for i in (-1, 1)]
 for y in range(1, h-1):
     for x in range(1, w-1):
         if level[y][x] != "#":
@@ -28,11 +30,10 @@ for y in range(1, h-1):
                     graph[(x, y, nd)].append(((nx, ny, nd), 1))
 
 # Find min. cost from given node via Dijkstra algorithm
-def solve(x, y, dirs):
+def solve(x, y, d):
     done = {u: False for u in graph}
     cost = {u: inf for u in graph}
-    for d in dirs:
-        cost[(x, y, d)] = 0
+    cost[(x, y, d)] = 0
     todo = [(cost[u], u) for u in graph]
     heapify(todo)
     while todo:
@@ -49,16 +50,15 @@ def solve(x, y, dirs):
     return cost
 
 # Count fields on cheapest paths
-cost_from_s = solve(sx, sy, [1])
-cost_from_t = solve(tx, ty, [0, 1, 2, 3])
-s_min = min(cost_from_s[(tx, ty, d)] for d in range(4))
+cost_from_s = solve(sx, sy, 1)
+cost_from_t = solve(tx, ty, 0)
+s_min = cost_from_s[(tx, ty, 0)]
 res = 0
 for y in range(1, h-1):
     for x in range(1, w-1):
         for d in range(4):
-            if any(cost_from_s.get((x, y, d), inf) + abs(i)*1000 + \
-                   cost_from_t.get((x, y, (d+2+i)%4), inf) == s_min \
-                   for i in range(-1, 2)):
+            if cost_from_s.get((x, y, d), inf) + \
+               cost_from_t.get((x, y, (d+2)%4), inf) == s_min:
                 res += 1
                 break
 print(res)
