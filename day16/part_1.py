@@ -7,9 +7,9 @@ with open("input.txt", "r") as f:
 
 h, w = len(level), len(level[0])
 sx, sy = next((level[y].index("S"), y) for y in range(h) if "S" in level[y])
-ex, ey = next((level[y].index("E"), y) for y in range(h) if "E" in level[y])
+tx, ty = next((level[y].index("E"), y) for y in range(h) if "E" in level[y])
 
-# Find cheapest path via modified BFS with priority queue
+# Find cheapest s-t-path via modified BFS with priority queue
 STEP = [(0,-1), (1,0), (0,1), (-1,0)]
 def solve(x, y, d):
     res = 0
