@@ -31,9 +31,10 @@ INS = [ins_adv, ins_bxl, ins_bst, ins_jnz, ins_bxc, ins_out, ins_bdv, ins_cdv]
 
 def check(bits, idx, val):
     next_bits = None
-    if all(bits[idx+i] < 0 or bits[idx+i] == v for i, v in enumerate(val) if idx+i >= 0):
+    vals = [1 if val & k else 0 for k in (4, 2, 1)]
+    if all(bits[idx+i] < 0 or bits[idx+i] == v for i, v in enumerate(vals) if idx+i >= 0):
         next_bits = bits[:]
-        for i, v in enumerate(val):
+        for i, v in enumerate(vals):
             if idx+i >= 0:
                 next_bits[idx+i] = v
     return next_bits
@@ -45,7 +46,6 @@ def solve(bits, i):
         a = int("".join(map(str, bits)), 2)
         solutions.append(a)
         return
-    p = [1 if prg[i] & k else 0 for k in (4, 2, 1)]
     j = 45 - 3*i
     cand = [[0, 1] if bits[j+k] < 0 else [bits[j+k]] for k in range(3)]
     for x in cand[0]:
@@ -55,24 +55,7 @@ def solve(bits, i):
             for z in cand[2]:
                 bits[j+2] = z
                 xyz = 4*x + 2*y + z
-                next_bits = None
-                if xyz == 0:
-                    next_bits = check(bits, j-1, [1-p[0], p[1], p[2]])
-                elif xyz == 1:
-                    next_bits = check(bits, j, [1-p[0], p[1], 1-p[2]])
-                elif xyz == 2:
-                    next_bits = check(bits, j-3, [1-p[0], 1-p[1], p[2]])
-                elif xyz == 3:
-                    next_bits = check(bits, j-2, [1-p[0], 1-p[1], 1-p[2]])
-                elif xyz == 4:
-                    next_bits = check(bits, j-5, [p[0], p[1], p[2]])
-                elif xyz == 5:
-                    next_bits = check(bits, j-4, [p[0], p[1], 1-p[2]])
-                elif xyz == 6:
-                    next_bits = check(bits, j-7, [p[0], 1-p[1], p[2]])
-                else:
-                    next_bits = check(bits, j-6, [p[0], 1-p[1], 1-p[2]])
-                if next_bits:
+                if next_bits := check(bits, j - (xyz ^ 1), (xyz ^ 4) ^ prg[i]):
                     solve(next_bits, i+1)
 
 # Compute register A
