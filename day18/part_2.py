@@ -29,17 +29,12 @@ def bfs(n):
 
 # Find min. number of blocking bytes with binary search
 res = None
-reachable = [True]*n + [None]*(len(pos)-n)
 l, r = n+1, len(pos)
 while l <= r:
     i = (l+r)//2
-    if reachable[i] is None:
-        reachable[i] = bfs(i)
-    if reachable[i-1] is None:
-        reachable[i-1] = bfs(i-1)
-    if reachable[i]:
+    if bfs(i):
         l = i
-    elif not reachable[i-1]:
+    elif not bfs(i-1):
         r = i
     else:
         res = pos[i-1]
