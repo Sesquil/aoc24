@@ -30,18 +30,22 @@ for i, (x, y) in enumerate(p):
 time = len(p) - 1
 
 MAX_PS = 20
+CHEAT_STEPS = [(dx, dy) for dx in range(-MAX_PS, MAX_PS+1) \
+               for dy in range(-MAX_PS, MAX_PS+1) if 2 <= abs(dx) + abs(dy) <= MAX_PS]
 
 # Count time savings for cheats
 t_cheats = {dt: 0 for dt in range(time)}
 for i, (x, y) in enumerate(p):
-    for j in range(i+4, len(p)):
-        nx, ny = p[j]
-        dist = abs(nx-x) + abs(ny-y)
-        if dist <= MAX_PS:
-            t = i + time - j + dist
-            dt = time - t
-            if dt > 0:
-                t_cheats[dt] += 1
+    for dx, dy in CHEAT_STEPS:
+        nx, ny = x+dx, y+dy
+        if nx >= 0 and nx < w and ny >= 0 and ny < h and (nx, ny) in idx:
+            j = idx[(nx, ny)]
+            if j > i+3:
+                dist = abs(dx) + abs(dy)
+                t = i + time - j + dist
+                dt = time - t
+                if dt > 0:
+                    t_cheats[dt] += 1
 #print("\n".join(f"{c} cheats saving {dt} ps" for dt, c in sorted(t_cheats.items()) if c > 0))
 
 res = sum(c for dt, c in t_cheats.items() if dt >= 100)
