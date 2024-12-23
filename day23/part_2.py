@@ -8,10 +8,6 @@ G = nx.Graph()
 nodes = set()
 for line in lines:
     a, b = line.strip().split("-")
-    if not a in nodes:
-        G.add_node(a)
-    if not b in nodes:
-        G.add_node(b)
     G.add_edge(a, b)
 
 # Find max clique
